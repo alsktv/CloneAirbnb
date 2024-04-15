@@ -7,7 +7,7 @@ class House(CommonModel):
   description = models.TextField()
   adress = models.CharField(max_length=140)
   pet_allowed = models.BooleanField(default=True)
-  owner = models.ForeignKey("users.User",on_delete=models.CASCADE, null=True)
+  owner = models.ForeignKey("users.User",on_delete=models.CASCADE, null=True,related_name="houses")
 
   def __str__(self):
     return self.name

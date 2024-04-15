@@ -16,12 +16,14 @@ class Room(CommonModel):
   adress = models.CharField(max_length=200)
   pet_allowed = models.BooleanField(default=False)
   kind = models.CharField(max_length=20,choices=RoomKindChoices.choices)
-  owner = models.ForeignKey("users.User",on_delete=models.CASCADE)
-  amenities = models.ManyToManyField("rooms.Amenity")
-  category = models.ForeignKey("categories.Category",on_delete=models.SET_NULL,null=True , blank=True)
+  owner = models.ForeignKey("users.User",on_delete=models.CASCADE , related_name = "rooms")
+  amenities = models.ManyToManyField("rooms.Amenity",related_name="rooms")
+  category = models.ForeignKey("categories.Category",on_delete=models.SET_NULL,null=True , blank=True,related_name="rooms")
   
   def __str__(self):
     return self.name
+  
+
   
 
 
