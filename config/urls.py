@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('rooms/', include("rooms.urls"))  #이거는 rooms/가 나오게 되면 rooms.url로 가달라는 뜻임 -> 분할 정복할 수 있음
 ]

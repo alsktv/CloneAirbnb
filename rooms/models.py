@@ -23,6 +23,18 @@ class Room(CommonModel):
   def __str__(self):
     return self.name
   
+  def avg_rating(self):
+    sum = 0
+    if(self.reviews.count() == 0):
+      return 0
+    else:
+      for i in self.reviews.all().values("user_rating"):
+        sum = sum+ i["user_rating"]
+      return round(sum/self.reviews.count(),2)
+    # return room.reviews.count()
+
+
+  
 
   
 
