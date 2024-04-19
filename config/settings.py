@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     "wishlists.apps.WishlistsConfig",
     "books.apps.BooksConfig",
     "medias.apps.MediasConfig",
-    "direct_messages.apps.DirectMessagesConfig"
+    "direct_messages.apps.DirectMessagesConfig",
+
+    "rest_framework",
 ]
 
 MIDDLEWARE = [

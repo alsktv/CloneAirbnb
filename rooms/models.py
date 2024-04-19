@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import CommonModel
 
+
 class Room(CommonModel):
 
   class RoomKindChoices(models.TextChoices):
@@ -32,6 +33,8 @@ class Room(CommonModel):
         sum = sum+ i["user_rating"]
       return round(sum/self.reviews.count(),2)
     # return room.reviews.count()
+
+
 
 
   

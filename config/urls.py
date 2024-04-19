@@ -19,5 +19,7 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rooms/', include("rooms.urls"))  #이거는 rooms/가 나오게 되면 rooms.url로 가달라는 뜻임 -> 분할 정복할 수 있음
+    path('api/v1/rooms/', include("rooms.urls")),  #이거는 rooms/가 나오게 되면 rooms.url로 가달라는 뜻임 -> 분할 정복할 수 있음
+    path("api/v1/categories/",include("categories.urls")),
+    path("api/v1/experiences/",include("experiences.urls")),
 ]
