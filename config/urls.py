@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/rooms/', include("rooms.urls")),  #이거는 rooms/가 나오게 되면 rooms.url로 가달라는 뜻임 -> 분할 정복할 수 있음
     path("api/v1/categories/",include("categories.urls")),
     path("api/v1/experiences/",include("experiences.urls")),
-]
+    path("api/v1/medias/",include("medias.urls"))
+    
+]  + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
