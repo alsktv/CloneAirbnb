@@ -34,6 +34,8 @@ class Room(CommonModel):
       return round(sum/self.reviews.count(),2)
     # return room.reviews.count()
 
+  def photos(self):
+    return self.photo.all()
 
 
 

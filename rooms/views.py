@@ -156,6 +156,8 @@ class RoomDetail(APIView):
     return Response(status = HTTP_204_NO_CONTENT )
   
 class Reviews(APIView):
+  permission_classes = [IsAuthenticatedOrReadOnly]
+
   def get_object(self,pk):
     try:
       room = Room.objects.get(pk = pk)
@@ -174,6 +176,16 @@ class Reviews(APIView):
       return Response(serializer.data)
     except ValueError: #except에는 에러가 나왔을 때 그 애러의 이름을 그대로 적어주면 됨***
       page = 1
+
+  def post(self,request,pk):
+    serializer = reviewSerializer(data = request.data)
+    user = request.user
+    if serializer.is_valid():
+      created_data = serializer.save(user = user, room = self.get_object(pk))
+      return Response(reviewSerializer(created_data).data)
+    else:
+      return serializer.errors
+
 
 class AmenitiesDetail(APIView):
   def get_object(self,pk):

@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/v1/rooms/', include("rooms.urls")),  #이거는 rooms/가 나오게 되면 rooms.url로 가달라는 뜻임 -> 분할 정복할 수 있음
     path("api/v1/categories/",include("categories.urls")),
     path("api/v1/experiences/",include("experiences.urls")),
-    path("api/v1/medias/",include("medias.urls"))
+    path("api/v1/medias/",include("medias.urls")),
+    path("api/v1/wishlist/",include("wishlists.urls")),
     
 ]  + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
