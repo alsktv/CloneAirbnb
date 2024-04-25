@@ -1,14 +1,17 @@
+from django.conf import settings
+from django.db import transaction
+from django.utils import timezone   #시간과 관련된 라이브러리
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound,NotAuthenticated,ParseError,PermissionDenied
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Room,Amenity
-from django.db import transaction
-from categories.models import Category
 from .serializers import amenitiySerializer,RoomSerializer,RoomDetailSerializer
+from categories.models import Category
+from books.models import Book
+from books.serializers import PublicBookingSerializer,CreateRoomBookingSerializer
 from reviews.serializers import reviewSerializer
-from django.conf import settings
 from medias.serializers import PhotoSerializer
 
 class Amenities(APIView):
@@ -226,3 +229,33 @@ class RoomPhotos(APIView):
       return Response(PhotoSerializer(created_data).data)
     else: return Response(serializer.errors)
       
+class RoomBookings(APIView):
+  permission_classes = [IsAuthenticatedOrReadOnly]
+
+  def get_objects(self,pk):
+    try:
+      return Room.objects.get(pk = pk) #objects는모델데이터를 ORM으로 바꿔주는 역할을 한다.
+    except:
+      raise NotFound
+    
+
+  def get(self,request,pk):
+   now_date = timezone.localtime(timezone.now()).date() #timezone.now() 를 하면 현재 날짜와 시간을 둘다 보여줌. localtime은 현재 지역의 날짜와 시간을 알려주고, date()는 날짜만 가져오게 만들어줌
+   bookings = Book.objects.filter(room__pk = pk , kind = Book.BookKindChoices.ROOM , cheak_in__gt = now_date) #if,else쓰는 것보다 훨씬 간편함
+   serializer = PublicBookingSerializer(bookings, many = True) #serializer는 queryset과 JSON과의 관계이다.
+   return Response(serializer.data)
+  
+  def post(self,request,pk):
+    room = self.get_objects(pk)
+    serializer = CreateRoomBookingSerializer(data = request.data)
+    print(serializer)
+    if serializer.is_valid():
+      created_data = serializer.save(
+        room = room,
+        user = request.user,
+        kind = Book.BookKindChoices.ROOM,
+      )
+      return Response(PublicBookingSerializer(created_data).data)
+
+    else: 
+      return Response(serializer.errors)

@@ -47,6 +47,17 @@ class RoomDetailSerializer(ModelSerializer):
   
  # reviews = reviewSerializer(many = True , read_only = True) #many = True는 serializer에서 사용하는 property임. serializer에 들어가는 값이 1개보다 많을 때는 반드시 사용해 주어야함.
   # 추가로 django는 reverse를 자동으로 저장하기에 related_name인 reviews가 자동으로 저장되어 있음. 따라서 위와 같은 문장으로 사용해도 됨
+  is_liked = serializers.SerializerMethodField()
+  def get_is_liked(self,room):
+    wishlists = room.owner.wishlists.all()
+    
+    for wishlist in wishlists:
+      for wishlist_room in wishlist.room.all():
+        if room.pk == wishlist_room.pk:
+          return True
+    return False
+
+
 
 
 
