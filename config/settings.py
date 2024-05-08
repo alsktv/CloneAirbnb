@@ -11,16 +11,23 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+
+env = environ.Env() #env 파일을 읽을 수 있게 만든거이
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR,".env")) #env파일을 읽는 코드, BASE_DIR뒤에 사용해야함.
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u5!ykhi2#^fjl^s=m7@1zr-un#9p^w#2jv1^9t18105vzu1$y_'
+# SECRET_KEY = env("SECRET_KEY") # 쿠키나 세션에 서명할 때 사용되는 비밀 키. 이 값이 나임을 증명해준다.이 값이 유출되면 남이 나처럼 행동 가능
+SECRET_KEY = "django-insecure-u5!ykhi2#^fjl^s=m7@1zr-un#9p^w#2jv1^9t18105vzu1$y_"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,7 +57,8 @@ INSTALLED_APPS = [
     "medias.apps.MediasConfig",
     "direct_messages.apps.DirectMessagesConfig",
 
-    "rest_framework",
+    "rest_framework", #rest_framework사용하기 위해서는 무조건 적어주기
+    "rest_framework.authtoken", #token authentication하기 위해서 적어주기, 이걸 적어주면 자동으로 migrations. 따라서 migrate를 한번 실행시켜 주어야 함.
 ]
 
 MIDDLEWARE = [
@@ -143,3 +151,12 @@ MEDIA_ROOT = "uploads"
 MEDIA_URL = "user-uploads/"
 
 PAGE_WIDTH = 3
+
+REST_FRAMEWORK = { #REST_FRAMEWORK에는 인증에 사용되는 class들을 넣어주면 된다.
+    "DEFAULT_AUTHENTICATION_CLASSES" :[
+    "rest_framework.authentication.SessionAuthentication", #이게 default로 들어가 있는 것
+    "config.permissions.TrustMeBroAuthentication",
+    "rest_framework.authentication.TokenAuthentication",
+    "config.permissions.JWTAuthentication",
+  ] 
+}

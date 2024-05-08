@@ -164,7 +164,7 @@ class Reviews(APIView):
   def get_object(self,pk):
     try:
       room = Room.objects.get(pk = pk)
-      return room.reviews.all()  #역 연산자로 값을 가져오면 그 값은 queryset이 아닌 ORM이 된다. 따라서 queryset을 가져오기 위해서는 반드시 all()이라는 method를 사용해야함.
+      return room.reviews.all()  #역 연산자로 값을 가져오면 그 값은 queryset이 됨. 이 쿼리셋 값을 가져오기 위해서는 뒤에 all()을 붇여줘야함. ORM에 사용하는 all() 과는 다름.
     except Room.DoesNotExist:
       raise NotFound
     

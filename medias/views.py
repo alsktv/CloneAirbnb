@@ -19,7 +19,7 @@ class PhotoDetail(APIView):
     photo = self.get_objects(pk)
     if request.user.is_authenticated:
        raise NotAuthenticated
-    if photo.room: #photo.room 은 foreignkey인대, 여기서는 인스턴스임.따라서 인스턴스의 속성값들도 가져올 수 있음
+    if photo.room: #photo.room 은 foreignkey인대, 여기서는 인스턴스임(related_name으로 가져온것은 쿼리셋임).따라서 인스턴스의 속성값들도 가져올 수 있음
        if photo.room.owner != request.user: #이것도 둘다 인스턴스임
           raise PermissionDenied
     elif photo.experience:

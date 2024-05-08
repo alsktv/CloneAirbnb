@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate,login,logout
+import jwt
+from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ParseError,NotFound
@@ -83,3 +84,22 @@ class LogOut(APIView):
   def post(self,request):
     logout(request)
     return Response({"status" : "logout is succesful"})
+
+
+class JWTLogIn(APIView):
+
+  def post(self,request):
+       username = request.data.get("username")
+       password = request.data.get("password")
+       if not username or not password:
+         raise ParseError
+       user = authenticate(request,username = username , password = password)
+
+       if user:
+         token = jwt.encode({"pk":user.pk}, settings.SECRET_KEY , algorithm = "HS256")
+         #encode에는 처음에는 token에 넣고 싶은 정보를 dict형태로, 두번째는 import 해서 가져온 settings에 secret_key, 마지막으로는 토큰을 만드는 방식인 알고리즘을 적어준다. 일반적으로는 HS256을 이용하기 때문에 그것을 적어주면 된다.
+         return Response({"token":token})
+       else:
+         return Response({
+           "error":"wrong password",
+         })

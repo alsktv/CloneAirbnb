@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token 
 from . import views
 
 urlpatterns = [ 
@@ -7,5 +8,7 @@ urlpatterns = [
   path("@<str:username>",views.Username.as_view()) , #이런식을<>주변에 글짜 넣는것도 가능!!!
   path("change-password",views.ChangePassword.as_view()),
   path("log-in",views.LogIn.as_view()),
+  path("token-login",obtain_auth_token), #token이 들어가는 url. obtain_auth_token만 import 받으면 됨. 참고로 obtain_auth_token은 class임.
+  path("jwt-login",views.JWTLogIn.as_view()),
   path("log-out", views.LogOut.as_view()),
 ]

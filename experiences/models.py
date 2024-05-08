@@ -13,6 +13,7 @@ class Experience(CommonModel):
   description = models.TextField()
   perk = models.ManyToManyField("experiences.Perk",related_name="experiences")
   category = models.ForeignKey("categories.Category",on_delete=models.SET_NULL,null=True , blank=True,related_name="experiences")
+  date = models.DateField(null = True)
   
 
   def __str__(self):
@@ -22,8 +23,8 @@ class Perk(CommonModel):
   """ It is introduce that what the experience include"""
 
   name = models.CharField(max_length=100)
-  detail = models.CharField(max_length=150)
-  explanation = models.TextField()
+  detail = models.CharField(max_length=150 , null = True , blank= True)
+  explanation = models.TextField(null = True , blank=True)
   
   def __str__(self):
     return self.name
