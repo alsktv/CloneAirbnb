@@ -11,16 +11,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import environ
+
+#import environ
 import os
 
 
-env = environ.Env() #env 파일을 읽을 수 있게 만든거이
+#env = environ.Env() #env 파일을 읽을 수 있게 만든거이
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(os.path.join(BASE_DIR,".env")) #env파일을 읽는 코드, BASE_DIR뒤에 사용해야함.
+#environ.Env.read_env(os.path.join(BASE_DIR,".env")) #env파일을 읽는 코드, BASE_DIR뒤에 사용해야함.
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -155,8 +156,8 @@ PAGE_WIDTH = 3
 REST_FRAMEWORK = { #REST_FRAMEWORK에는 인증에 사용되는 class들을 넣어주면 된다.
     "DEFAULT_AUTHENTICATION_CLASSES" :[
     "rest_framework.authentication.SessionAuthentication", #이게 default로 들어가 있는 것
-    "config.permissions.TrustMeBroAuthentication",
-    "rest_framework.authentication.TokenAuthentication",
+    # "config.permissions.TrustMeBroAuthentication",
+    # "rest_framework.authentication.TokenAuthentication",
     "config.permissions.JWTAuthentication",
   ] 
 }

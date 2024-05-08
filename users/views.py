@@ -92,7 +92,7 @@ class JWTLogIn(APIView):
        username = request.data.get("username")
        password = request.data.get("password")
        if not username or not password:
-         raise ParseError
+         raise ParseError("please write username and password")
        user = authenticate(request,username = username , password = password)
 
        if user:

@@ -19,7 +19,7 @@ class TrustMeBroAuthentication(BaseAuthentication):  #custom된 인증을 만드
 class JWTAuthentication(BaseAuthentication):
 
   def authenticate(self,request):
-    token = request.headers.get("authorization")
+    token = request.headers.get("Authorization")
     if not token:
       return None
     decode =  jwt.decode(token,settings.SECRET_KEY , algorithms = ["HS256"] ) #decode 를 해주면 우리가 처음에 토큰을 만들 때 집어넣었던 dict가 그대로 출력됨!!!
